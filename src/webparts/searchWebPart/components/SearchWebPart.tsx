@@ -7,6 +7,7 @@ import { ISearchWebPartState } from './ISearchWebPartState';
 import styles from '../SearchWebPart.module.scss';
 import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
+import { IDeliverableItem } from '../models/IDeliverableItem';
 
 export default class SearchWebPart extends React.Component<ISearchWebPartProps, ISearchWebPartState> {
 
@@ -35,7 +36,7 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       displayName: 'Topic',
       sorting: true,
       minWidth: 200,
-      render: (item: any) => {
+      render: (item: IDeliverableItem) => {
         const topicValues = Object.keys(item)
           .filter(key => key.indexOf('Topic.') === 0 && /^\d+$/.test(key.split('.')[1]))
           .map(key => item[key]);
@@ -102,7 +103,7 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       displayName: 'Leader', 
       sorting: true, 
       minWidth: 70,
-      render: (item: any) => {
+      render: (item: IDeliverableItem) => {
         // Colors for leader pill
         const leaderColors: { [key: string]: string } = {
           'USE': '#a4262c', 
@@ -149,7 +150,7 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       displayName: 'Project', 
       sorting: true, 
       minWidth: 80,
-      render: (item: any) => {
+      render: (item: IDeliverableItem) => {
         // Colors for project pill
         const projectColors: { [key: string]: string } = {
           'Ulysseus1': '#d13438',
@@ -178,7 +179,7 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       displayName: 'Submitted',
       sorting: true,
       minWidth: 100,
-      render: (item: any) => {
+      render: (item: IDeliverableItem) => {
         return item.Submitted ? (
           <Icon
             iconName="CheckMark"
@@ -192,7 +193,7 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       displayName: 'Dissemination', 
       sorting: true, 
       minWidth: 100,
-      render: (item: any) => {
+      render: (item: IDeliverableItem) => {
         // Example color-coded “Confidential” vs. “Public”
         const disseminationColors: { [key: string]: string } = {
           'Confidential': '#4f6bed',
@@ -570,10 +571,10 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
     sp.web.lists.getByTitle('Deliverables').items
       .select("Id, Deliverable, Title, Leader, Project, Submitted, Dissemination, Topic, Leader")
       .filter(filterQuery)()
-      .then((items: any[]) => {
+      .then((items: IDeliverableItem[]) => {
         this.setState({ items });
       })
-      .catch((error: any) => {
+      .catch((error: IDeliverableItem) => {
         console.error("Error fetching items: ", error);
       });
   }
