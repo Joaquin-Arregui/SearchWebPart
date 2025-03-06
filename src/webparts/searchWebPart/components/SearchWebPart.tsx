@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 import { ListView, IViewField } from '@pnp/spfx-controls-react/lib/ListView';
-import { sp } from '../pnpjsConfig'; // Import the configured sp instance
+import { sp } from '../pnpjsConfig';
 import { ISearchWebPartProps } from './ISearchWebPartProps';
 import { ISearchWebPartState } from './ISearchWebPartState';
 import styles from '../SearchWebPart.module.scss';
@@ -11,7 +11,6 @@ import { IDeliverableItem } from '../models/IDeliverableItem';
 
 export default class SearchWebPart extends React.Component<ISearchWebPartProps, ISearchWebPartState> {
 
-  // Define the view fields for the ListView control.
   private viewFields: IViewField[] = [
     { 
       name: 'Id', 
@@ -41,12 +40,10 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
           .filter(key => key.indexOf('Topic.') === 0 && /^\d+$/.test(key.split('.')[1]))
           .map(key => item[key]);
 
-        // If no "Topic.X" keys, fall back to item.Topic
         const values = topicValues.length > 0
           ? topicValues
           : (item.Topic ? [item.Topic] : []);
 
-        // Colors for topic pills
         const topicColors: { [key: string]: string } = {
           'Management': '#d4e7f6',
           'Campus': '#caf0cc',
@@ -104,7 +101,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       sorting: true, 
       minWidth: 70,
       render: (item: IDeliverableItem) => {
-        // Colors for leader pill
         const leaderColors: { [key: string]: string } = {
           'USE': '#a4262c', 
           'UniCA': '#80c6ff',
@@ -151,7 +147,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       sorting: true, 
       minWidth: 80,
       render: (item: IDeliverableItem) => {
-        // Colors for project pill
         const projectColors: { [key: string]: string } = {
           'Ulysseus1': '#d13438',
           'Ulysseus2': '#7252aa',
@@ -194,7 +189,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       sorting: true, 
       minWidth: 100,
       render: (item: IDeliverableItem) => {
-        // Example color-coded “Confidential” vs. “Public”
         const disseminationColors: { [key: string]: string } = {
           'Confidential': '#4f6bed',
           'Public': '#ac539d'
@@ -220,7 +214,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
 
   constructor(props: ISearchWebPartProps) {
     super(props);
-    // Extend your state interface to include the filter values:
     this.state = {
       searchQuery: '',
       items: [],
@@ -230,14 +223,12 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
     };
   }
 
-  // Called every time the search box value changes.
   private _onSearchChange = (newValue: string): void => {
     this.setState({ searchQuery: newValue }, () => {
       this._performSearch();
     });
   }
 
-  // Called when a filter dropdown value changes.
   private _onTopicChange = (
     event: React.FormEvent<HTMLDivElement>,
     option?: IDropdownOption
@@ -265,11 +256,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
     });
   }
 
-  // --------
-  // RENDER FUNCTIONS FOR DROPDOWN OPTIONS
-  // --------
-
-  // Render Topic in the dropdown list
   private _onRenderTopicOption = (option: IDropdownOption): JSX.Element => {
     if (!option || !option.text) return <span />;
     if (option.key === '') return <span>{option.text}</span>;
@@ -319,7 +305,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
     );
   };
 
-  // Render Project in the dropdown list
   private _onRenderProjectOption = (option: IDropdownOption): JSX.Element => {
     if (!option || !option.text) return <span />;
     if (option.key === '') return <span>{option.text}</span>;
@@ -346,7 +331,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
     );
   };
 
-  // Render Leader in the dropdown list
   private _onRenderLeaderOption = (option: IDropdownOption): JSX.Element => {
     if (!option || !option.text) return <span />;
     if (option.key === '') return <span>{option.text}</span>;
@@ -391,10 +375,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       </span>
     );
   };
-
-  // --------
-  // RENDER FUNCTIONS FOR THE SELECTED ITEM (onRenderTitle)
-  // --------
 
   private _onRenderTopicTitle = (options: IDropdownOption[]): JSX.Element => {
     if (!options || options.length === 0) {
@@ -531,11 +511,9 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
     );
   };
 
-  // Build an OData filter and perform the search on the SharePoint List.
   private _performSearch = (): void => {
     const { searchQuery, selectedTopic, selectedProject, selectedLeader } = this.state;
     
-    // If no search query and no filters, clear the results.
     if (!searchQuery && !selectedTopic && !selectedProject && !selectedLeader) {
       this.setState({ items: [] });
       return;
@@ -543,7 +521,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
 
     const filters: string[] = [];
 
-    // If there is search text, add substring filters for searchable columns.
     if (searchQuery) {
       const searchableColumns = ['ID', 'Deliverable', 'Title', 'Topic', 'Leader', 'Project', 'Dissemination', 'Leader'];
       const queryFilters = searchableColumns.map(col => `substringof('${searchQuery}', ${col})`);
@@ -554,7 +531,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       filters.push(`(${queryFilters.join(' or ')})`);
     }
 
-    // Add extra filters if a value has been selected.
     if (selectedTopic) {
       filters.push(`substringof('${selectedTopic}', Topic)`);
     }
@@ -565,7 +541,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       filters.push(`Leader eq '${selectedLeader}'`);
     }
 
-    // Combine all filters with AND.
     const filterQuery = filters.join(' and ');
 
     sp.web.lists.getByTitle('Deliverables').items
@@ -580,7 +555,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
   }
   
   public render(): React.ReactElement<ISearchWebPartProps> {
-    // Define dropdown options.
     const topicOptions: IDropdownOption[] = [
       { key: '', text: 'Select Topic' },
       { key: 'Management', text: 'Management' },
@@ -631,9 +605,7 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
               options={topicOptions}
               onChange={this._onTopicChange}
               selectedKey={this.state.selectedTopic}
-              // Renders each option in the dropdown as a pill
               onRenderOption={this._onRenderTopicOption}
-              // Renders the selected item as a pill
               onRenderTitle={this._onRenderTopicTitle}
               styles={{
                 dropdown: {

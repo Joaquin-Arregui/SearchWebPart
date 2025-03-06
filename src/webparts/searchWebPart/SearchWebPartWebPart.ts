@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { initializePnp } from './pnpjsConfig'; // New import
+import { initializePnp } from './pnpjsConfig';
 
 import SearchWebPart from './components/SearchWebPart';
 import { ISearchWebPartProps } from './components/ISearchWebPartProps';
@@ -15,7 +15,6 @@ export default class SearchWebPartWebPart extends BaseClientSideWebPart<ISearchW
 
   public onInit(): Promise<void> {
     return super.onInit().then(() => {
-      // Initialize PnPjs with the current context.
       initializePnp(this.context);
     });
   }

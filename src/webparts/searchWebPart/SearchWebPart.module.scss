@@ -23,12 +23,12 @@
   a {
     text-decoration: none;
     color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+    color: var(--link);
 
     &:hover {
       text-decoration: underline;
       color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+      color: var(--linkHovered);
     }
   }
 }
@@ -44,14 +44,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%; // Ensure the container can stretch full width
-  margin-top: 1rem; // optional
+  width: 100%;
+  margin-top: 1rem;
 }
 
 .filterItem {
   display: flex;
   align-items: center;
-  margin-right: 0; // remove the previous margin
+  margin-right: 0;
 }
 
 .filterLabel {
