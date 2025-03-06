@@ -1,4 +1,4 @@
-# web-part-2
+# web-part
 
 ## Summary
 

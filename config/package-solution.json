@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "web-part-2-client-side-solution",
+    "name": "web-part-client-side-solution",
     "id": "549d4f60-dca6-4bf5-93b1-218b9ff8a936",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
@@ -16,10 +16,10 @@
     },
     "metadata": {
       "shortDescription": {
-        "default": "web-part-2 description"
+        "default": "web-part description"
       },
       "longDescription": {
-        "default": "web-part-2 description"
+        "default": "web-part description"
       },
       "screenshotPaths": [],
       "videoUrl": "",
@@ -27,14 +27,14 @@
     },
     "features": [
       {
-        "title": "web-part-2 Feature",
-        "description": "The feature that activates elements of the web-part-2 solution.",
+        "title": "web-part Feature",
+        "description": "The feature that activates elements of the web-part solution.",
         "id": "85a7bc59-f382-408c-8a96-05c6a3e5c9f0",
         "version": "1.0.0.0"
       }
     ]
   },
   "paths": {
-    "zippedPackage": "solution/web-part-2.sppkg"
+    "zippedPackage": "solution/web-part.sppkg"
   }
 }
