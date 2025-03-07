@@ -13,12 +13,6 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
 
   private viewFields: IViewField[] = [
     { 
-      name: 'Id', 
-      displayName: 'ID', 
-      sorting: true, 
-      minWidth: 25 
-    },
-    { 
       name: 'Deliverable', 
       displayName: 'Deliverable', 
       sorting: true, 
@@ -519,15 +513,14 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
       return;
     }
 
+    // 2) Remove 'ID' from the columns we search
     const filters: string[] = [];
 
     if (searchQuery) {
-      const searchableColumns = ['ID', 'Deliverable', 'Title', 'Topic', 'Leader', 'Project', 'Dissemination', 'Leader'];
-      const queryFilters = searchableColumns.map(col => `substringof('${searchQuery}', ${col})`);
-      const parsedQuery = parseInt(searchQuery, 10);
-      if (!isNaN(parsedQuery)) {
-        queryFilters.push(`Id eq ${parsedQuery}`);
-      }
+      const searchableColumns = ['Deliverable', 'Title', 'Topic', 'Leader', 'Project', 'Dissemination'];
+      const queryFilters = searchableColumns.map(
+        col => `substringof('${searchQuery}', ${col})`
+      );
       filters.push(`(${queryFilters.join(' or ')})`);
     }
 
@@ -544,7 +537,7 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
     const filterQuery = filters.join(' and ');
 
     sp.web.lists.getByTitle('Deliverables').items
-      .select("Id, Deliverable, Title, Leader, Project, Submitted, Dissemination, Topic, Leader")
+      .select("Deliverable, Title, Leader, Project, Submitted, Dissemination, Topic")
       .filter(filterQuery)()
       .then((items: IDeliverableItem[]) => {
         this.setState({ items });
@@ -589,6 +582,7 @@ export default class SearchWebPart extends React.Component<ISearchWebPartProps, 
 
     return (
       <div className={styles.searchWebPart}>
+        <h1>Search engine for Deliverables</h1>
         <SearchBox
           placeholder="Search..."
           onChange={(
