@@ -26,8 +26,8 @@ To work on and test the web part locally using the SharePoint Workbench or a hos
 
 1. **Clone the repository**  
    ```
-   git clone <your-repository-url>
-   cd <your-repository>
+   git clone [<your-repository-url>](https://github.com/Joaquin-Arregui/SearchWebPart.git)
+   cd SearchWebPart
    ```
 
 2. **Install dependencies**  
